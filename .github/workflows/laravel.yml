@@ -35,6 +35,6 @@ jobs:
       #Deploy
       - run: rsync --archive --compress --progress . ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}:${{env.SERVER_PATH}}
       - name: Update composer and install npm on the server
-        run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && composer update &&  composer install --ignore-platform-reqs  && npm install"
+        run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }}  &&  composer install --ignore-platform-reqs  && npm install"
       - name: Directory Permissions
         run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && chmod -R 777 storage bootstrap/cache"
