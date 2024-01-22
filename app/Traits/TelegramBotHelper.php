@@ -78,7 +78,7 @@ trait TelegramBotHelper
 
         $url = self::Url('sendMessage');
         $response = Http::post($url, $params)->json();
-
+            dd($response);
         return response()->json($response);
     }
 
