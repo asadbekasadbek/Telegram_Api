@@ -11,6 +11,7 @@ class Telegram extends Controller
 
     public function test(Request $request)
     {
+        dd($request);
         return self::gtest($request->chatId,$request->message);
     }
     public function SendMessage(Request $request)
