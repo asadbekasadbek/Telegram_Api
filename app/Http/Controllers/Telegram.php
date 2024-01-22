@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Traits\TelegramBotHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class Telegram extends Controller
 {
@@ -11,8 +12,8 @@ class Telegram extends Controller
 
     public function test(Request $request)
     {
-        dd($request);
-        return self::gtest($request->chatId,$request->message);
+        $response = Http::post('https://jsonplaceholder.typicode.com/posts')->json();
+        return response()->json($response);
     }
     public function SendMessage(Request $request)
     {
