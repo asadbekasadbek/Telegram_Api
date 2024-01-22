@@ -39,5 +39,5 @@ jobs:
       - name: Directory Permissions
         run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && chmod -R 777 storage bootstrap/cache"
       - name: Octane
-        run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && php artisan octane:install && 0 && yes && yes  && pm2 restart all"
+        run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && php artisan octane:stop && php artisan octane:start"
 
