@@ -12,7 +12,7 @@ class Telegram extends Controller
 
     public function SendMessage(Request $request)
     {
-        return self::SendTelegramMessage($request->chatId,$request->message);
+        return self::SendTelegramMessage($request->chatId, $request->message);
     }
 
     public function SendReply(Request $request)
