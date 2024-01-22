@@ -38,3 +38,5 @@ jobs:
         run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }}  &&  composer install --ignore-platform-reqs  && npm install"
       - name: Directory Permissions
         run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && chmod -R 777 storage bootstrap/cache"
+      - name: Octane
+        run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && pm2 stop laravel-app && pm2 start laravel-app
