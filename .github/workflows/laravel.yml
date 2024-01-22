@@ -37,7 +37,7 @@ jobs:
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist && npm install && npm run build
       - name: Octane
-        run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} &&  php artisan octane:install -n  && pm2 stop laravel-app && pm2 start ecosystem.config.json"
+        run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }}  && pm2 stop laravel-app && pm2 start ecosystem.config.json"
       - name: Directory Permissions
         run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && chmod -R 777 storage bootstrap/cache"
 
