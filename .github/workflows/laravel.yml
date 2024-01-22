@@ -39,5 +39,5 @@ jobs:
       - name: Directory Permissions
         run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && chmod -R 777 storage bootstrap/cache"
       - name: Octane
-        run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && pm2 stop laravel-app && pm2 start ecosystem.config.json
+        run: ssh ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} "cd ${{ env.SERVER_PATH }} && pm2 stop laravel-app && pm2 start ecosystem.config.json"
 
