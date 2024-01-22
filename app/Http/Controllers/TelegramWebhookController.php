@@ -10,6 +10,6 @@ class TelegramWebhookController extends Controller
     use TelegramBotHelper;
     public function handle(Request $request)
     {
-        return self::SendTelegramMessage(991027867,"</code>$request</code>");
+        return self::SendTelegramMessage(991027867,"$request");
     }
 }
