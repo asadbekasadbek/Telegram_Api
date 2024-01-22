@@ -13,20 +13,6 @@ trait TelegramBotHelper
         return "https://api.telegram.org/bot{$botToken}/$type";
     }
 
-    public static function gtest(
-        int|string $chatId,
-        string     $message
-    ): JsonResponse
-    {
-        $url = self::Url('sendMessage');
-        $params = [
-            'chat_id' => $chatId,
-            'text' => $message,
-            'parse_mode' => 'HTML',
-        ];
-        $response = Http::post($url, $params)->json();
-        return response()->json($response);
-    }
 
     public static function SendTelegramMessage(
         int|string $chatId,
@@ -78,7 +64,6 @@ trait TelegramBotHelper
 
         $url = self::Url('sendMessage');
         $response = Http::post($url, $params)->json();
-            dd($response);
         return response()->json($response);
     }
 

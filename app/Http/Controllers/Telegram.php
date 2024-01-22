@@ -10,11 +10,6 @@ class Telegram extends Controller
 {
     use TelegramBotHelper;
 
-    public function test(Request $request)
-    {
-        $response = Http::post('https://jsonplaceholder.typicode.com/posts')->json();
-        return response()->json($response);
-    }
     public function SendMessage(Request $request)
     {
         return self::SendTelegramMessage($request->chatId,$request->message);
