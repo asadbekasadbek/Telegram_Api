@@ -21,6 +21,7 @@ Route::controller(\App\Http\Controllers\TelegramWebhookController::class)->group
 });
 
 Route::controller(\App\Http\Controllers\Telegram::class)->group(function (){
+    Route::post('telegram-bot/test', 'test');
     Route::post('telegram-bot/telegram_send_message', 'SendMessage');
     Route::post('telegram-bot/telegram-send-reply','SendReply');
     Route::post('telegram-bot/telegram-send-reply','SendReply');

@@ -13,6 +13,21 @@ trait TelegramBotHelper
         return "https://api.telegram.org/bot{$botToken}/$type";
     }
 
+    public static function gtest(
+        int|string $chatId,
+        string     $message
+    ): JsonResponse
+    {
+        $url = self::Url('sendMessage');
+        $params = [
+            'chat_id' => $chatId,
+            'text' => $message,
+            'parse_mode' => 'HTML',
+        ];
+        $response = Http::post($url, $params)->json();
+        return response()->json($response);
+    }
+
     public static function SendTelegramMessage(
         int|string $chatId,
         string     $message,
@@ -74,7 +89,7 @@ trait TelegramBotHelper
         ?bool      $disableNotification = null,
         ?bool      $protectContent = null,
         int        $messageId
-    ):JsonResponse
+    ): JsonResponse
     {
         $url = self::Url('forwardMessage');
         $params = [
@@ -103,14 +118,14 @@ trait TelegramBotHelper
     }
 
 
-    public static function SentdTelegramForwardMessages(
+    public static function SendTelegramForwardMessages(
         int|string $chatId,
         int        $messageThreadId,
         int|string $fromChatId,
         array|int  $messageIds,
         bool       $disable_notification = false,
         bool       $protectContent = false
-    ):JsonResponse
+    ): JsonResponse
     {
         $url = self::Url('forwardMessages');
         $params = [

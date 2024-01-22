@@ -9,6 +9,10 @@ class Telegram extends Controller
 {
     use TelegramBotHelper;
 
+    public function test(Request $request)
+    {
+        return self::gtest($request->chatId,$request->message);
+    }
     public function SendMessage(Request $request)
     {
         return self::SendTelegramMessage($request->chatId,$request->message);
