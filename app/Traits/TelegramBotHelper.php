@@ -14,16 +14,16 @@ trait TelegramBotHelper
     }
 
     public static function SendTelegramMessage(
-        int|string  $chatId,
-        string  $message,
-        ?string $messageThreadId = null,
-        string  $parseMode = 'HTML',
-        ?array  $entities = null,
-        ?bool   $disableNotification = null,
-        ?bool   $protectContent = null,
-                $linkPreviewOptions = null,
-                $replyParameters = null,
-                $replyMarkup = null
+        int|string $chatId,
+        string     $message,
+        ?string    $messageThreadId = null,
+        string     $parseMode = 'HTML',
+        ?array     $entities = null,
+        ?bool      $disableNotification = null,
+        ?bool      $protectContent = null,
+                   $linkPreviewOptions = null,
+                   $replyParameters = null,
+                   $replyMarkup = null
     ): JsonResponse
     {
         $params = [
@@ -67,20 +67,20 @@ trait TelegramBotHelper
         return response()->json($response);
     }
 
-    public static function SentdTelegramForwardMessage(
+    public static function SendTelegramForwardMessage(
         int|string $chatId,
-        int $messageThreadId = null,
-        int|string  $fromChatId = null,
-        ?bool $disableNotification = null,
-        ?bool $protectContent = null,
-        int $messageId
-    )
+        int        $messageThreadId = null,
+        int|string $fromChatId = null,
+        ?bool      $disableNotification = null,
+        ?bool      $protectContent = null,
+        int        $messageId
+    ):JsonResponse
     {
-        $url = self::Url('sendMessage');
+        $url = self::Url('forwardMessage');
         $params = [
             'chat_id' => $chatId,
             'message_id' => $messageId,
-            'from_chat_id'=>$fromChatId
+            'from_chat_id' => $fromChatId
         ];
 
         // Add parameters if they are not null
@@ -103,8 +103,34 @@ trait TelegramBotHelper
     }
 
 
+    public static function SentdTelegramForwardMessages(
+        int|string $chatId,
+        int        $messageThreadId,
+        int|string $fromChatId,
+        array|int  $messageIds,
+        bool       $disable_notification = false,
+        bool       $protectContent = false
+    ):JsonResponse
+    {
+        $url = self::Url('forwardMessages');
+        $params = [
+            'chat_id' => $chatId,
+            'message_thread_id' => $messageThreadId,
+            'from_chat_id' => $fromChatId,
+            'message_ids' => $messageIds,
+            'disable_notification' => $disable_notification,
+            'protect_content' => $protectContent
+        ];
 
-    public static function SendTelegramReply(string $chatId, string $message, string $replyId,string $parseMode='HTML'): JsonResponse
+        $response = Http::post($url, $params)->json();
+
+        return response()->json($response);
+    }
+
+
+    //<-- new up -->
+
+    public static function SendTelegramReply(string $chatId, string $message, string $replyId, string $parseMode = 'HTML'): JsonResponse
     {
         $url = self::Url('sendMessage');
         $response = Http::post($url, [
@@ -118,7 +144,7 @@ trait TelegramBotHelper
     }
 
 
-    public static function SendDeleteTelegramMessage(string $chatId, string $messageId, ?int $seconds=0): JsonResponse
+    public static function SendDeleteTelegramMessage(string $chatId, string $messageId, ?int $seconds = 0): JsonResponse
     {
         $url = self::Url('deleteMessage');
         sleep($seconds);
@@ -140,14 +166,4 @@ trait TelegramBotHelper
         return response()->json($response);
     }
 
-    public function SendTelegramExternalReplyInfo(string $chatId, string $messageText, array $entities): JsonResponse
-    {
-        $url = self::Url('sendMessage');
-        $response = Http::post($url, [
-            'chat_id' => $chatId,
-            'text' => $messageText,
-            'entities' => json_encode($entities),
-        ]);
-        return response()->json($response);
-    }
 }

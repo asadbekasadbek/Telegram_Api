@@ -43,11 +43,7 @@ class Telegram extends Controller
                 "url" => "https://core.telegram.org/bots/api#textquote",
             ],
         ];
-        return self::TelegramMessageEntity($request->chatId, $request->messageText, $entities);
+        return self::SendTelegramMessageEntity($request->chatId, $request->messageText, $entities);
     }
 
-    public function ExternalReplyInfo(Request $request)
-    {
-        return self::TelegramExternalReplyInfo($request->chatId, $request->messageText);
-    }
 }

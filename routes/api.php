@@ -18,6 +18,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::controller(\App\Http\Controllers\TelegramWebhookController::class)->group(function (){
+    Route::post('telegram-bot/handle', 'handle');
+});
 
 Route::controller(\App\Http\Controllers\Telegram::class)->group(function (){
     Route::post('telegram-bot/telegram_send_message', 'SendMessage');
