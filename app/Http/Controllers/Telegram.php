@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Traits\TelegramBotHelper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-
+use GuzzleHttp\Client;
 class Telegram extends Controller
 {
     use TelegramBotHelper;
@@ -46,5 +45,16 @@ class Telegram extends Controller
         ];
         return self::SendTelegramMessageEntity($request->chatId, $request->messageText, $entities);
     }
-
+    public function TelegramPhoto(Request $request)
+    {
+//        $photo_path = 'https://avatars.mds.yandex.net/i?id=e62bde91d2d3ff5039a299e54bbe643da748fa96-10555985-images-thumbs&n=13';
+        $photo_path = storage_path('app/public/img/OIG.jpg');
+       return self::SendTelegramPhoto($request->chatId,$photo_path);
+    }
+    public function TelegramAudio(Request $request)
+    {
+//
+        $photo_path = public_path('test.ogg');
+        return self::SendTelegramAudio($request->chatId,$photo_path);
+    }
 }

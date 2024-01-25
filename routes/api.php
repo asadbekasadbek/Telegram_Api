@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,16 +14,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::controller(\App\Http\Controllers\TelegramWebhookController::class)->group(function (){
+Route::controller(\App\Http\Controllers\TelegramWebhookController::class)->group(function () {
     Route::post('/telegram-bot/handle', 'handle');
 });
 
-Route::controller(\App\Http\Controllers\Telegram::class)->group(function (){
+Route::controller(\App\Http\Controllers\Telegram::class)->group(function () {
+    Route::post('/telegram-bot/telegram-audio', 'TelegramAudio');
+    Route::post('/telegram-bot/telegram_photo', 'TelegramPhoto');
     Route::post('/telegram-bot/telegram_send_message', 'SendMessage');
-    Route::post('/telegram-bot/telegram-send-reply','SendReply');
-    Route::post('/telegram-bot/telegram-send-reply','SendReply');
-    Route::post('/telegram-bot/telegram-delete-message','DeleteMessage');
-    Route::post('/telegram-bot/telegram-delete-message','DeleteMessageLater');
-    Route::post('/telegram-bot/telegram-message-entity','MessageEntity');
-    Route::post('/telegram-bot/text-quote','TextQuote');
+    Route::post('/telegram-bot/telegram-send-reply', 'SendReply');
+    Route::post('/telegram-bot/telegram-send-reply', 'SendReply');
+    Route::post('/telegram-bot/telegram-delete-message', 'DeleteMessage');
+    Route::post('/telegram-bot/telegram-delete-message', 'DeleteMessageLater');
+    Route::post('/telegram-bot/telegram-message-entity', 'MessageEntity');
+    Route::post('/telegram-bot/text-quote', 'TextQuote');
 });

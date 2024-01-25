@@ -128,6 +128,178 @@ trait TelegramBotHelper
     }
 
 
+    public static function SendTelegramCopyMessages(
+        int|string $chatId,
+        int        $messageThreadId,
+        int|string $fromChatId,
+        array|int  $messageIds,
+        ?bool      $disable_notification = null,
+        ?bool      $protectContent = null,
+        ?bool      $removeCaption = null
+    ): JsonResponse
+    {
+        $url = self::Url('copyMessages');
+        $params = [
+            'chat_id' => $chatId,
+            'message_thread_id' => $messageThreadId,
+            'from_chat_id' => $fromChatId,
+            'message_ids' => $messageIds,
+        ];
+
+        if ($disable_notification !== null) {
+            $params['disable_notification'] = $disable_notification;
+        }
+
+        if ($protectContent !== null) {
+            $params['protect_content'] = $protectContent;
+        }
+
+        if ($removeCaption !== null) {
+            $params['remove_caption'] = $removeCaption;
+        }
+
+        $response = Http::post($url, $params)->json();
+
+        return response()->json($response);
+    }
+
+
+    public function SendTelegramPhoto(
+        int|string $chatId,
+        string     $photo,
+        ?string    $caption = null,
+        ?string    $parseMode = 'HTML',
+        ?int       $messageThreadId = null,
+        ?array     $captionEntities = null,
+        bool       $hasSpoiler = null,
+        bool       $disableNotification = null,
+                   $replyParameters = null,
+                   $replyMarkup = null
+    ): JsonResponse
+    {
+        $url = self::Url('sendPhoto');
+        if (!filter_var($photo, FILTER_VALIDATE_URL)) {
+            $photo = fopen($photo, 'r');
+        }
+        $params = [
+            'chat_id' => $chatId,
+            'parse_mode' => $parseMode,
+            'photo' => $photo
+        ];
+        if ($caption !== null) {
+            $params['caption'] = $caption;
+        }
+        if ($disableNotification !== null) {
+            $params['disable_notification'] = $disableNotification;
+        }
+        // Add optional parameters if they are not null or false
+        if ($messageThreadId !== null) {
+            $params['message_thread_id'] = $messageThreadId;
+        }
+
+        if ($captionEntities !== null) {
+            $params['caption_entities'] = json_encode($captionEntities);
+        }
+
+        if ($hasSpoiler !== null) {
+            $params['has_spoiler'] = $hasSpoiler;
+        }
+
+        if ($replyParameters !== null) {
+            $params['reply_parameters'] = $replyParameters;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = $replyMarkup;
+        }
+
+        $response = Http::asMultipart()->post($url, $params);
+
+
+        return response()->json($response);
+    }
+
+    public static function SendTelegramAudio(
+        int|string $chatId,
+        string     $audio,
+        ?string    $caption = null,
+        ?string    $parseMode = 'HTML',
+        ?int       $messageThreadId = null,
+        ?array     $captionEntities = null,
+        ?int       $duration = null,
+        ?string    $performer = null,
+        ?string    $title = null,
+        ?string    $thumbnail = null,
+        ?bool      $disableNotification = null,
+        ?bool      $protectContent = null,
+                   $replyParameters = null,
+                   $replyMarkup = null
+    ): JsonResponse
+    {
+        $url = self::Url('sendAudio');
+
+        if (!filter_var($audio, FILTER_VALIDATE_URL)) {
+            $audio = fopen($audio, 'r');
+        }
+
+        $params = [
+            'chat_id' => $chatId,
+            'parse_mode' => $parseMode,
+            'audio' => $audio,
+        ];
+
+        if ($caption !== null) {
+            $params['caption'] = $caption;
+        }
+
+        if ($messageThreadId !== null) {
+            $params['message_thread_id'] = $messageThreadId;
+        }
+
+        if ($captionEntities !== null) {
+            $params['caption_entities'] = $captionEntities;
+        }
+
+        if ($duration !== null) {
+            $params['duration'] = $duration;
+        }
+
+        if ($performer !== null) {
+            $params['performer'] = $performer;
+        }
+
+        if ($title !== null) {
+            $params['title'] = $title;
+        }
+
+        if ($thumbnail !== null) {
+            $params['thumb'] = $thumbnail;
+        }
+
+        if ($disableNotification !== null) {
+            $params['disable_notification'] = $disableNotification;
+        }
+
+        if ($protectContent !== null) {
+            $params['protect_content'] = $protectContent;
+        }
+
+        if ($replyParameters !== null) {
+            $params['reply_parameters'] = $replyParameters;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = $replyMarkup;
+        }
+
+        $response = Http::asMultipart()->post($url, $params);
+
+
+        return response()->json($response);
+
+    }
+
+
     //<-- new up -->
 
     public static function SendTelegramReply(string $chatId, string $message, string $replyId, string $parseMode = 'HTML'): JsonResponse
