@@ -19,6 +19,9 @@ Route::controller(\App\Http\Controllers\TelegramWebhookController::class)->group
 });
 
 Route::controller(\App\Http\Controllers\Telegram::class)->group(function () {
+
+    Route::post('/telegram-bot/telegram-video', 'TelegramVideo');
+    Route::post('/telegram-bot/telegram-document', 'TelegramDocument');
     Route::post('/telegram-bot/telegram-audio', 'TelegramAudio');
     Route::post('/telegram-bot/telegram_photo', 'TelegramPhoto');
     Route::post('/telegram-bot/telegram_send_message', 'SendMessage');

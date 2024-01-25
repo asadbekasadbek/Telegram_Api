@@ -53,8 +53,22 @@ class Telegram extends Controller
     }
     public function TelegramAudio(Request $request)
     {
-//
-        $photo_path = public_path('test.ogg');
-        return self::SendTelegramAudio($request->chatId,$photo_path);
+//        $audio_path ='https://relaxlive.online/test.ogg';
+        $audio_path = public_path('test.ogg');
+        return self::SendTelegramAudio($request->chatId,$audio_path);
+    }
+
+    public function TelegramDocument(Request $request)
+    {
+//        $audio_path ='https://relaxlive.online/test.ogg';
+        $document_path = public_path('test.docx');
+        return self::SendTelegramDocument($request->chatId,$document_path);
+    }
+
+    public function TelegramVideo(Request $request)
+    {
+//        $video_path = 'https://relaxlive.online/test.mp4';
+        $video_path = public_path('test.mp4');
+        return self::SendTelegramVideo($request->chatId,$video_path);
     }
 }

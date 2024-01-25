@@ -273,7 +273,10 @@ trait TelegramBotHelper
         }
 
         if ($thumbnail !== null) {
-            $params['thumb'] = $thumbnail;
+            if (!filter_var($thumbnail, FILTER_VALIDATE_URL)) {
+                $thumbnail = fopen($thumbnail, 'r');
+            }
+            $params['thumbnail'] = $thumbnail;
         }
 
         if ($disableNotification !== null) {
@@ -290,6 +293,201 @@ trait TelegramBotHelper
 
         if ($replyMarkup !== null) {
             $params['reply_markup'] = $replyMarkup;
+        }
+
+        $response = Http::asMultipart()->post($url, $params);
+
+
+        return response()->json($response);
+
+    }
+
+    public static function SendTelegramDocument(
+        int|string $chatId,
+        string     $document,
+        ?string    $caption = null,
+        ?string    $parseMode = 'HTML',
+        ?int       $messageThreadId = null,
+        ?array     $captionEntities = null,
+        ?int       $duration = null,
+        ?string    $performer = null,
+        ?string    $title = null,
+        ?string    $thumbnail = null,
+        ?bool      $disableNotification = null,
+        ?bool      $protectContent = null,
+        ?bool      $disableContentTypeDetection = null,
+                   $replyParameters = null,
+                   $replyMarkup = null
+    ): JsonResponse
+    {
+        $url = self::Url('sendDocument');
+
+        if (!filter_var($document, FILTER_VALIDATE_URL)) {
+            $document = fopen($document, 'r');
+        }
+
+        $params = [
+            'chat_id' => $chatId,
+            'parse_mode' => $parseMode,
+            'document' => $document,
+        ];
+
+        if ($caption !== null) {
+            $params['caption'] = $caption;
+        }
+
+        if ($messageThreadId !== null) {
+            $params['message_thread_id'] = $messageThreadId;
+        }
+
+        if ($captionEntities !== null) {
+            $params['caption_entities'] = $captionEntities;
+        }
+
+        if ($duration !== null) {
+            $params['duration'] = $duration;
+        }
+
+        if ($performer !== null) {
+            $params['performer'] = $performer;
+        }
+
+        if ($title !== null) {
+            $params['title'] = $title;
+        }
+
+        if ($thumbnail !== null) {
+            if (!filter_var($thumbnail, FILTER_VALIDATE_URL)) {
+                $thumbnail = fopen($thumbnail, 'r');
+            }
+            $params['thumbnail'] = $thumbnail;
+        }
+
+        if ($disableNotification !== null) {
+            $params['disable_notification'] = $disableNotification;
+        }
+
+        if ($protectContent !== null) {
+            $params['protect_content'] = $protectContent;
+        }
+
+        if ($replyParameters !== null) {
+            $params['reply_parameters'] = $replyParameters;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = $replyMarkup;
+        }
+        if ($disableContentTypeDetection !== null) {
+            $params['disable_content_type_detection'] = $disableContentTypeDetection;
+        }
+
+        $response = Http::asMultipart()->post($url, $params);
+
+
+        return response()->json($response);
+
+    }
+
+    public static function SendTelegramVideo(
+        int|string $chatId,
+        string     $video,
+        ?string    $caption = null,
+        ?string    $parseMode = 'HTML',
+        ?int       $messageThreadId = null,
+        ?array     $captionEntities = null,
+        ?int       $width = null,
+        ?int       $height = null,
+        ?int       $duration = null,
+        ?string    $performer = null,
+        ?string    $title = null,
+        ?string    $thumbnail = null,
+        ?bool      $disableNotification = null,
+        ?bool      $hasSpoiler = null,
+        ?bool      $supportsStreaming = null,
+        ?bool      $protectContent = null,
+        ?bool      $disableContentTypeDetection = null,
+                   $replyParameters = null,
+                   $replyMarkup = null
+    ): JsonResponse
+    {
+        $url = self::Url('sendVideo');
+
+        if (!filter_var($video, FILTER_VALIDATE_URL)) {
+            $video = fopen($video, 'r');
+        }
+
+        $params = [
+            'chat_id' => $chatId,
+            'parse_mode' => $parseMode,
+            'video' => $video,
+        ];
+
+        if ($caption !== null) {
+            $params['caption'] = $caption;
+        }
+
+        if ($hasSpoiler !== null) {
+            $params['has_spoiler'] = $hasSpoiler;
+        }
+
+        if ($supportsStreaming !== null) {
+            $params['supports_streaming'] = $supportsStreaming;
+        }
+
+
+        if ($width !== null) {
+            $params['width'] = $width;
+        }
+
+        if ($height !== null) {
+            $params['caption'] = $height;
+        }
+
+        if ($messageThreadId !== null) {
+            $params['message_thread_id'] = $messageThreadId;
+        }
+
+        if ($captionEntities !== null) {
+            $params['caption_entities'] = $captionEntities;
+        }
+
+        if ($duration !== null) {
+            $params['duration'] = $duration;
+        }
+
+        if ($performer !== null) {
+            $params['performer'] = $performer;
+        }
+
+        if ($title !== null) {
+            $params['title'] = $title;
+        }
+
+        if ($thumbnail !== null) {
+            if (!filter_var($thumbnail, FILTER_VALIDATE_URL)) {
+                $thumbnail = fopen($thumbnail, 'r');
+            }
+            $params['thumbnail'] = $thumbnail;
+        }
+
+        if ($disableNotification !== null) {
+            $params['disable_notification'] = $disableNotification;
+        }
+
+        if ($protectContent !== null) {
+            $params['protect_content'] = $protectContent;
+        }
+
+        if ($replyParameters !== null) {
+            $params['reply_parameters'] = $replyParameters;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = $replyMarkup;
+        }
+        if ($disableContentTypeDetection !== null) {
+            $params['disable_content_type_detection'] = $disableContentTypeDetection;
         }
 
         $response = Http::asMultipart()->post($url, $params);
