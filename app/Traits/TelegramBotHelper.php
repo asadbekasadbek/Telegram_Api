@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
 
@@ -1275,10 +1274,10 @@ trait TelegramBotHelper
         ?bool      $canChangeInfo = null,
         ?bool      $canInviteUsers = null,
         ?bool      $canPinMessages = null,
-        ?bool      $canPostStories =null,
-        ?bool      $canEditStories =null,
-        ?bool      $canDeleteStories =null,
-        ?bool      $canManageTopics =null,
+        ?bool      $canPostStories = null,
+        ?bool      $canEditStories = null,
+        ?bool      $canDeleteStories = null,
+        ?bool      $canManageTopics = null,
     ): JsonResponse
     {
         $url = self::Url('promoteChatMember');
@@ -1356,7 +1355,8 @@ trait TelegramBotHelper
         int|string $chatId,
         int        $userId,
         string     $customTitle,
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $url = self::Url('setChatAdministratorCustomTitle');
         $params = [
             'chat_id' => $chatId,
@@ -1372,7 +1372,8 @@ trait TelegramBotHelper
     public static function banTelegramChatSenderChat(
         int|string $chatId,
         int        $senderChatId,
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $url = self::Url('banChatSenderChat');
         $params = [
             'chat_id' => $chatId,
@@ -1388,7 +1389,8 @@ trait TelegramBotHelper
     public static function unbanTelegramChatSenderChat(
         int|string $chatId,
         int        $senderChatId
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $url = self::Url('unbanChatSenderChat');
         $params = [
             'chat_id' => $chatId,
@@ -1402,9 +1404,10 @@ trait TelegramBotHelper
 
     public static function setTelegramChatPermissions(
         int|string $chatId,
-        array $permissions,
-        ?bool $useIndependentChatPermissions = null
-    ): JsonResponse {
+        array      $permissions,
+        ?bool      $useIndependentChatPermissions = null
+    ): JsonResponse
+    {
         $url = self::Url('setChatPermissions');
         $params = [
             'chat_id' => $chatId,
@@ -1423,7 +1426,8 @@ trait TelegramBotHelper
 
     public static function exportTelegramChatInviteLink(
         int|string $chatId,
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $url = self::Url('exportChatInviteLink');
         $params = [
             'chat_id' => $chatId,
@@ -1439,7 +1443,8 @@ trait TelegramBotHelper
         ?int       $expireDate = null,
         ?int       $memberLimit = null,
         ?bool      $createsJoinRequest = null
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $url = self::Url('createChatInviteLink');
         $params = [
             'chat_id' => $chatId
@@ -1454,7 +1459,7 @@ trait TelegramBotHelper
         }
 
         if ($memberLimit !== null) {
-            if ($memberLimit>99999){
+            if ($memberLimit > 99999) {
                 $memberLimit = 99999;
             }
             $params['member_limit'] = $memberLimit;
@@ -1477,7 +1482,8 @@ trait TelegramBotHelper
         ?int       $expireDate = null,
         ?int       $memberLimit = null,
         ?bool      $createsJoinRequest = null
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $url = self::Url('editChatInviteLink');
         $params = [
             'chat_id' => $chatId,
@@ -1493,7 +1499,7 @@ trait TelegramBotHelper
         }
 
         if ($memberLimit !== null) {
-            if ($memberLimit>99999){
+            if ($memberLimit > 99999) {
                 $memberLimit = 99999;
             }
             $params['member_limit'] = $memberLimit;
@@ -1508,8 +1514,1178 @@ trait TelegramBotHelper
         return response()->json($response);
     }
 
+    public static function revokeTelegramChatInviteLink(
+        int|string $chatId,
+        string     $inviteLink
+    ): JsonResponse
+    {
+        $url = self::Url('revokeChatInviteLink');
+        $params = [
+            'chat_id' => $chatId,
+            'invite_link' => $inviteLink
+        ];
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
 
 
+    public static function approveTelegramChatJoinRequest(
+        int|string $chatId,
+        int        $userId,
+    ): JsonResponse
+    {
+        $url = self::Url('approveChatJoinRequest');
+        $params = [
+            'chat_id' => $chatId,
+            'user_id' => $userId
+        ];
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function declineTelegramChatJoinRequest(
+        int|string $chatId,
+        int        $userId,
+    ): JsonResponse
+    {
+        $url = self::Url('declineChatJoinRequest');
+        $params = [
+            'chat_id' => $chatId,
+            'user_id' => $userId
+        ];
+
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+
+    public static function setTelegramChatPhoto(
+        int|string $chatId,
+        string     $photo,
+    ): JsonResponse
+    {
+        $url = self::Url('setChatPhoto');
+        $photo = fopen($photo, 'r');
+        $params = [
+            'chat_id' => $chatId,
+            'photo' => $photo
+        ];
+
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function deleteTelegramChatPhoto(
+        int|string $chatId,
+    ): JsonResponse
+    {
+        $url = self::Url('deleteChatPhoto');
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+
+    public static function setTelegramChatTitle(
+        int|string $chatId,
+        string     $title,
+    ): JsonResponse
+    {
+        $url = self::Url('setChatTitle');
+        $params = [
+            'chat_id' => $chatId,
+            'title' => $title
+        ];
+
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+
+    public static function setTelegramChatDescription(
+        int|string $chatId,
+        string     $description,
+    ): JsonResponse
+    {
+        $url = self::Url('setChatDescription');
+        $params = [
+            'chat_id' => $chatId,
+            'description' => $description
+        ];
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function pinTelegramChatMessage(
+        int|string $chatId,
+        int        $messageId,
+        ?bool      $disableNotification = null,
+    ): JsonResponse
+    {
+        $url = self::Url('pinChatMessage');
+        $params = [
+            'chat_id' => $chatId,
+            'message_id' => $messageId
+        ];
+
+        if ($disableNotification !== null) {
+            $params['disable_notification'] = $disableNotification;
+        }
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function unpinTelegramChatMessage(
+        int|string $chatId,
+        ?int       $messageId = null,
+    ): JsonResponse
+    {
+        $url = self::Url('unpinChatMessage');
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($messageId !== null) {
+            $params['message_id'] = $messageId;
+        }
+
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+
+    public static function unpinAllTelegramChatMessages(
+        int|string $chatId,
+
+    ): JsonResponse
+    {
+        $url = self::Url('unpinAllChatMessages');
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function leaveTelegramChat(
+        int|string $chatId,
+
+    ): JsonResponse
+    {
+        $url = self::Url('leaveChat');
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+
+    public static function getTelegramChat(
+        int|string $chatId,
+
+    ): JsonResponse
+    {
+        $url = self::Url('getChat');
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function getTelegramChatAdministrators(
+        int|string $chatId,
+
+    ): JsonResponse
+    {
+        $url = self::Url('getChatAdministrators');
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function getTelegramChatMemberCount(
+        int|string $chatId,
+
+    ): JsonResponse
+    {
+        $url = self::Url('getChatMemberCount');
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function getTelegramChatMember(
+        int|string $chatId,
+        int        $userId
+
+    ): JsonResponse
+    {
+        $url = self::Url('getChatMember');
+        $params = [
+            'chat_id' => $chatId,
+            'user_id' => $userId
+        ];
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function setTelegramChatStickerSet(
+        int|string $chatId,
+        string     $stickerSetName
+
+    ): JsonResponse
+    {
+        $url = self::Url('setChatStickerSet');
+        $params = [
+            'chat_id' => $chatId,
+            'sticker_set_name' => $stickerSetName
+        ];
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function deleteTelegramChatStickerSet(
+        int|string $chatId,
+
+    ): JsonResponse
+    {
+        $url = self::Url('deleteChatStickerSet');
+        $params = [
+            'chat_id' => $chatId,
+        ];
+
+        $response = Http::asMultipart()->post($url, $params);
+
+        return response()->json($response);
+    }
+
+    public static function createTelegramForumTopic(
+        int|string $chatId,
+        string     $name,
+        ?int       $iconColor = null,
+        ?string    $iconCustomEmojiId = null
+    ): JsonResponse
+    {
+
+        $url = self::Url('createForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+            'name' => $name
+        ];
+
+        if ($iconColor !== null) {
+            $params['icon_color'] = $iconColor;
+        }
+
+        if ($iconCustomEmojiId !== null) {
+            $params['icon_custom_emoji_id'] = $iconCustomEmojiId;
+        }
+
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+
+    }
+
+
+    public static function editTelegramForumTopic(
+        int|string $chatId,
+        string     $name,
+        int        $messageThreadId,
+        ?int       $iconColor = null,
+        ?string    $iconCustomEmojiId = null
+    ): JsonResponse
+    {
+
+        $url = self::Url('editForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+            'message_thread_id' => $messageThreadId
+        ];
+
+
+        if ($name !== null) {
+            $params['name'] = $name;
+        }
+
+        if ($iconColor !== null) {
+            $params['icon_color'] = $iconColor;
+        }
+
+        if ($iconCustomEmojiId !== null) {
+            $params['icon_custom_emoji_id'] = $iconCustomEmojiId;
+        }
+
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+
+    }
+
+    public static function closeTelegramForumTopic(
+        int|string $chatId,
+        int        $messageThreadId
+    ): JsonResponse
+    {
+
+        $url = self::Url('closeForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+            'message_thread_id' => $messageThreadId
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function reopenTelegramForumTopic(
+        int|string $chatId,
+        int        $messageThreadId
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('reopenForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+            'message_thread_id' => $messageThreadId
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function deleteTelegramForumTopic(
+        int|string $chatId,
+        int        $messageThreadId
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('deleteForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+            'message_thread_id' => $messageThreadId
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function unpinAllTelegramForumTopicMessages(
+        int|string $chatId,
+        int        $messageThreadId
+    ): JsonResponse
+    {
+
+        $url = self::Url('unpinAllForumTopicMessages');
+
+        $params = [
+            'chat_id' => $chatId,
+            'message_thread_id' => $messageThreadId
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function editTelegramGeneralForumTopic(
+        int|string $chatId,
+        int        $name
+    ): JsonResponse
+    {
+
+        $url = self::Url('editGeneralForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+            'name' => $name
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function closeTelegramGeneralForumTopic(
+        int|string $chatId,
+    ): JsonResponse
+    {
+
+        $url = self::Url('closeGeneralForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function reopenTelegramGeneralForumTopic(
+        int|string $chatId,
+    ): JsonResponse
+    {
+
+        $url = self::Url('reopenGeneralForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function hideTelegramGeneralForumTopic(
+        int|string $chatId,
+    ): JsonResponse
+    {
+
+        $url = self::Url('hideGeneralForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function unhideTelegramGeneralForumTopic(
+        int|string $chatId,
+    ): JsonResponse
+    {
+
+        $url = self::Url('unhideGeneralForumTopic');
+
+        $params = [
+            'chat_id' => $chatId,
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function unpinAllTelegramGeneralForumTopicMessages(
+        int|string $chatId,
+    ): JsonResponse
+    {
+
+        $url = self::Url('unpinAllGeneralForumTopicMessages');
+
+        $params = [
+            'chat_id' => $chatId,
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function answerTelegramCallbackQuery(
+        string  $callbackQueryId,
+        ?string $text = null,
+        ?bool   $showAlert = null,
+        ?string $urlTG = null,
+        ?int    $cacheTime = 0
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('answerCallbackQuery');
+
+        $params = [
+            'callback_query_id' => $callbackQueryId
+        ];
+
+        if ($text !== null) {
+            $params['text'] = $text;
+        }
+
+        if ($showAlert !== null) {
+            $params['show_alert'] = $showAlert;
+        }
+
+        if ($urlTG !== null) {
+            $params['url'] = $urlTG;
+        }
+
+        if ($cacheTime !== null) {
+            $params['cache_time'] = $cacheTime;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function getTelegramUserChatBoosts(
+        int|string $chatId,
+        int        $userId
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('getUserChatBoosts');
+
+        $params = [
+            'chat_id' => $chatId,
+            'user_id' => $userId
+        ];
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function setTelegramMyCommands(
+        int|string $chatId,
+        array      $commands,
+                   $scope = null,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('setMyCommands');
+
+        $params = [
+            'chat_id' => $chatId,
+            'commands' => json_encode($commands)
+        ];
+
+        if ($scope !== null) {
+            $params['scope'] = json_encode($scope);
+        }
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function deleteTelegramMyCommands(
+        int|string $chatId,
+                   $scope = null,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+        $url = self::Url('deleteMyCommands');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($scope !== null) {
+            $params['scope'] = json_encode($scope);
+        }
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function getTelegramMyCommands(
+        int|string $chatId,
+                   $scope = null,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('getMyCommands');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($scope !== null) {
+            $params['scope'] = json_encode($scope);
+        }
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function setTelegramMyName(
+        int|string $chatId,
+        ?string    $name = null,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+        $url = self::Url('setMyName');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($name !== null) {
+            $params['name'] = $name;
+        }
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function getTelegramMyName(
+        int|string $chatId,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+        $url = self::Url('getMyName');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function setTelegramMyDescription(
+        int|string $chatId,
+        ?string    $description = null,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('setMyDescription');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($description !== null) {
+            $params['description'] = $description;
+        }
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function getTelegramMyDescription(
+        int|string $chatId,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('getMyDescription');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function setTelegramMyShortDescription(
+        int|string $chatId,
+        ?string    $short_description = null,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('setMyShortDescription');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($short_description !== null) {
+            $params['short_description'] = $short_description;
+        }
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function getTelegramMyShortDescription(
+        int|string $chatId,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('getMyShortDescription');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function setTelegramChatMenuButton(
+        int|string $chatId,
+        ?array     $menuButton = null,
+        ?string    $language_code = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('setChatMenuButton');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($menuButton !== null) {
+            $params['menu_button'] = json_encode($menuButton);
+        }
+
+        if ($language_code !== null) {
+            $params['language_code'] = $language_code;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function setTelegramMyDefaultAdministratorRights(
+        int|string $chatId,
+                   $rights = null,
+        ?bool      $for_channels = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('setMyDefaultAdministratorRights');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($rights !== null) {
+            $params['rights'] = json_encode($rights);
+        }
+
+        if ($for_channels !== null) {
+            $params['for_channels'] = $for_channels;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function getTelegramMyDefaultAdministratorRights(
+        int|string $chatId,
+        ?bool      $for_channels = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('getMyDefaultAdministratorRights');
+
+        $params = [
+            'chat_id' => $chatId
+        ];
+
+        if ($for_channels !== null) {
+            $params['for_channels'] = $for_channels;
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function editTelegramMessageText(
+        int|string $chatId,
+        ?int       $messageId = null,
+        ?string    $inlineMessageId = null,
+        string     $text,
+        ?string    $parseMode = null,
+        ?array     $entities = null,
+                   $linkPreviewOptions = null,
+                   $replyMarkup = null
+    ): JsonResponse
+    {
+
+        // URL of the API endpoint
+        $url = self::Url('editMessageText');
+
+        // Parameters array
+        $params = [
+            'chat_id' => $chatId,
+            'text' => $text
+        ];
+
+        if ($messageId !== null) {
+            $params['message_id'] = $messageId;
+        }
+
+        if ($inlineMessageId !== null) {
+            $params['inline_message_id'] = $inlineMessageId;
+        }
+
+        if ($parseMode !== null) {
+            $params['parse_mode'] = $parseMode;
+        }
+
+        if ($entities !== null) {
+            $params['entities'] = $entities;
+        }
+
+        if ($linkPreviewOptions !== null) {
+            $params['link_preview_options'] = $linkPreviewOptions;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = $replyMarkup;
+        }
+
+        // Send the request
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function editTelegramMessageCaption(
+        null|int|string $chatId = null,
+        ?int            $messageId = null,
+        ?string         $inlineMessageId = null,
+        ?string         $caption = null,
+        ?string         $parseMode = null,
+        ?array          $captionEntities = null,
+                        $replyMarkup = null
+    ): JsonResponse
+    {
+
+        // URL of the API endpoint
+        $url = self::Url('editMessageCaption');
+
+        // Parameters array
+        $params = [];
+
+        if ($chatId !== null) {
+            $params['chat_id'] = $chatId;
+        }
+
+        if ($messageId !== null) {
+            $params['message_id'] = $messageId;
+        }
+
+        if ($inlineMessageId !== null) {
+            $params['inline_message_id'] = $inlineMessageId;
+        }
+
+        if ($caption !== null) {
+            $params['caption'] = $caption;
+        }
+
+        if ($parseMode !== null) {
+            $params ['parse_mode'] = $parseMode;
+        }
+
+        if ($captionEntities !== null) {
+            $params ['caption_entities'] = $captionEntities;
+        }
+
+        if ($replyMarkup !== null) {
+            $params ['reply_markup'] = $replyMarkup;
+        }
+
+        // Send the request
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function editTelegramMessageMedia(
+        int|string $chatId = null,
+        ?int       $messageId = null,
+        ?string    $inlineMessageId = null,
+                   $media,
+                   $replyMarkup = null
+    ): JsonResponse
+    {
+
+        // URL of the API endpoint
+        $url = self::Url('editMessageMedia');
+
+        // Parameters array
+        $params = ['media' => json_encode($media)];
+
+        // Check each parameter for non-null and add to params array
+        if ($chatId !== null) {
+            $params['chat_id'] = $chatId;
+        }
+
+        if ($messageId !== null) {
+            $params['message_id'] = $messageId;
+        }
+
+        if ($inlineMessageId !== null) {
+            $params['inline_message_id'] = $inlineMessageId;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = $replyMarkup;
+        }
+
+        // Send the request
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function editTelegramMessageLiveLocation(
+        int|string $chatId = null,
+        ?int       $messageId = null,
+        ?string    $inlineMessageId = null,
+        float      $latitude,
+        float      $longitude,
+        ?float     $horizontalAccuracy = null,
+        ?int       $heading = null,
+        ?int       $proximityAlertRadius = null,
+                   $replyMarkup = null
+    ): JsonResponse
+    {
+
+
+        $url = self::Url('editMessageLiveLocation');
+
+        // Parameters array
+        $params = [
+            'latitude' => $latitude,
+            'longitude' => $longitude
+        ];
+
+        if ($chatId !== null) {
+            $params['chat_id'] = $chatId;
+        }
+
+        if ($messageId !== null) {
+            $params['message_id'] = $messageId;
+        }
+
+        if ($inlineMessageId !== null) {
+            $params['inline_message_id'] = $inlineMessageId;
+        }
+
+        if ($horizontalAccuracy !== null) {
+            $params['horizontal_accuracy'] = $horizontalAccuracy;
+        }
+
+        if ($heading !== null) {
+            $params['heading'] = $heading;
+        }
+
+        if ($proximityAlertRadius !== null) {
+            $params['proximity_alert_radius'] = $proximityAlertRadius;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = json_encode($replyMarkup);
+        }
+
+        return response()->json(Http::asMultipart()->post($url, $params));
+
+    }
+
+
+    public static function stopTelegramMessageLiveLocation(
+        int|string $chatId = null,
+        ?int       $messageId = null,
+        ?string    $inlineMessageId = null,
+                   $replyMarkup = null
+    ): JsonResponse
+    {
+
+        // URL of the API endpoint
+        $url = self::Url('stopMessageLiveLocation');
+
+        // Parameters array
+        $params = [];
+
+        // Check each parameter for non-null and add to params array
+        if ($chatId !== null) {
+            $params['chat_id'] = $chatId;
+        }
+
+        if ($messageId !== null) {
+            $params['message_id'] = $messageId;
+        }
+
+        if ($inlineMessageId !== null) {
+            $params['inline_message_id'] = $inlineMessageId;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = json_encode($replyMarkup);
+        }
+
+        // Send the request
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function editTelegramMessageReplyMarkup(
+        int|string $chatId = null,
+        ?int       $messageId = null,
+        ?string    $inlineMessageId = null,
+                   $replyMarkup = null
+    ): JsonResponse
+    {
+
+        // URL of the API endpoint
+        $url = self::Url('editMessageReplyMarkup');
+
+        // Parameters array
+        $params = [];
+
+        // Check each parameter for non-null and add to params array
+        if ($chatId !== null) {
+            $params['chat_id'] = $chatId;
+        }
+
+        if ($messageId !== null) {
+            $params['message_id'] = $messageId;
+        }
+
+        if ($inlineMessageId !== null) {
+            $params['inline_message_id'] = $inlineMessageId;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = json_encode($replyMarkup);
+        }
+
+        // Send the request
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function stopTelegramPoll(
+        int|string $chatId = null,
+        ?int $messageId = null,
+         $replyMarkup = null
+    ): JsonResponse {
+
+        // URL of the API endpoint
+        $url = self::Url('stopPoll');
+
+        // Parameters array
+        $params = [];
+
+        // Check each parameter for non-null and add to params array
+        if ($chatId !== null) {
+            $params['chat_id'] = $chatId;
+        }
+
+        if ($messageId !== null) {
+            $params['message_id'] = $messageId;
+        }
+
+        if ($replyMarkup !== null) {
+            $params['reply_markup'] = json_encode($replyMarkup);
+        }
+
+        // Send the request
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+    public static function deleteTelegramMessage(
+        int|string $chatId ,
+        int $messageId
+    ): JsonResponse {
+
+        // URL of the API endpoint
+        $url = self::Url('deleteMessage');
+
+        // Parameters array
+        $params = [
+            'chat_id' => $chatId,
+            'message_id' => $messageId,
+        ];
+
+
+        // Send the request
+        return response()->json(Http::asMultipart()->post($url, $params));
+    }
+
+
+    public static function deleteTelegramMessages(
+        int|string $chatId,
+        array $messageIds
+    ): JsonResponse {
+            $url = self::Url('deleteMessages');
+
+            $params = [
+                'chat_id' => $chatId,
+                'message_ids' => $messageIds
+            ];
+
+
+            return response()->json(Http::asMultipart()->post($url, $params));
+    }
 
 
 

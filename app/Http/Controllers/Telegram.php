@@ -71,4 +71,9 @@ class Telegram extends Controller
         $video_path = public_path('test.mp4');
         return self::SendTelegramVideo($request->chatId,$video_path);
     }
+
+    public function TelegramGetForumTopicIconStickers(Request $request)
+    {
+         return self::getTelegramMyShortDescription($request->chatId);
+    }
 }

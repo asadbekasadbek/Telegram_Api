@@ -31,4 +31,5 @@ Route::controller(\App\Http\Controllers\Telegram::class)->group(function () {
     Route::post('/telegram-bot/telegram-delete-message', 'DeleteMessageLater');
     Route::post('/telegram-bot/telegram-message-entity', 'MessageEntity');
     Route::post('/telegram-bot/text-quote', 'TextQuote');
+    Route::post('/telegram-bot/telegram_get_forum_topic_icon_stickers','TelegramGetForumTopicIconStickers');
 });
